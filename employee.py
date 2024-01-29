@@ -1,6 +1,7 @@
 from tkinter import*
 from tkinter import ttk
 from PIL import Image,ImageTk
+import mysql.connector
 from tkinter import messagebox
 
 
@@ -94,7 +95,7 @@ class Employee:
         lbl_Designition=Label(upper_Frame,font=("arial",12,"bold"),text="Designition:",bg="white")
         lbl_Designition.grid(row=1,column=0,sticky=W,padx=2,pady=7)
 
-        txt_Designition=ttk.Entry(upper_Frame,textvariable=self.var_designation,width=22,font=("arial",11,"bold"))
+        txt_Designition=ttk.Entry(upper_Frame,textvariable=self.var_desig,width=22,font=("arial",11,"bold"))
         txt_Designition.grid(row=1,column=1,sticky=W,padx=2,pady=7)
 
         #Email
@@ -152,14 +153,12 @@ class Employee:
         com_txt_gender['Value']=("Male","Female","Other")
         com_txt_gender.current(0)
         com_txt_gender.grid(row=4,column=3,sticky=W,padx=2,pady=7)
-        
-        
 
         #Country 
         lbl_country=Label(upper_Frame,font=("arial",12,"bold"),text="Country:",bg="white")
         lbl_country.grid(row=1,column=4,sticky=W,padx=2,pady=7)
 
-        txt_country=ttk.Entry(upper_Frame,txtvariable=self.var_ecountry,width=22,font=("arial",11,"bold"))
+        txt_country=ttk.Entry(upper_Frame,txtvariable=self.var_country,width=22,font=("arial",11,"bold"))
         txt_country.grid(row=1,column=5,padx=2,pady=7)
 
         #Phone
@@ -318,13 +317,9 @@ class Employee:
                                                                                                                 self.var_country.get(),
                                                                                                                 self.var_salary.get()
 
-
-
                                                                                                              )) 
                 
-                else:
-                if not update:
-                        return
+        
                 conn.commit()
                 self.fetch_data()
                 conn.close()
@@ -381,7 +376,7 @@ class Employee:
                 try:
                     conn=mysql.connector.connect(host='localhost',username='root',password='Test@123',database='mydata')
                     my_cursor=conn.cursor()
-                    my_cursor.execute('select * from employeel where'+str(self.var_com_search.get())+"LIKE'%"+str(self.var_search.get()+"%'"))   
+                    my_cursor.execute('select * from employeel where'+str(self.var_com_search.get())+" LIKE '%"+str(self.var_search.get()+"%'"))   
                     rows=my_cursor.fetchall()
                     if len(rows)!=0:
                         self.employee_table.delete(*self.employee_table.get_children())
@@ -413,18 +408,11 @@ class Employee:
     def get_cursor(self,event=""):
             cursor_row=self.employee_table.focus()
             content=self.employee_table.item(cursor_row)
-            data=content['values']
-
-           
-           
-            
-
-            
-            
+            data=content['values']      
 
 
         if __name__=="__main__":
             root=Tk()
-            obj=Employee.py(root)
+            obj=Employee.(root)
             root.mainloop()
             
